@@ -22,12 +22,12 @@
           <div class="overlay-panel overlay-left">
             <h1>欢迎回来~</h1>
             <p>登录个人账号，开始记笔记啦！</p>
-            <button class="ghost" @click="fromSignIn">登录</button>
+            <button class="ghost" @click="this.isRegisteredPage = !this.isRegisteredPage;">登录</button>
           </div>
           <div class="overlay-panel overlay-right">
             <h1>你好朋友~</h1>
             <p>注册一个账号，开始记笔记吧！</p>
-            <button class="ghost" @click="fromSignUp">注册</button>
+            <button class="ghost" @click="this.isRegisteredPage = !this.isRegisteredPage;">注册</button>
           </div>
         </div>
       </div>
@@ -42,14 +42,6 @@ export default {
     return {
       // 是否显示注册页面
       isRegisteredPage: false
-    }
-  },
-  methods: {
-    fromSignUp() {
-      this.isRegisteredPage = !this.isRegisteredPage;
-    },
-    fromSignIn() {
-      this.isRegisteredPage = !this.isRegisteredPage;
     }
   }
 }
