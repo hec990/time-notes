@@ -1,10 +1,12 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Login from "../views/Login.vue";
+import Login from "../pages/Login.vue";
+import NoteBookList from "../pages/NoteBookList";
 
 
 // 路由配置对象
 const routes = [
-    {path: '/', component: Login}
+    {path: '/', component: Login},
+    {path: '/notebooks', component: NoteBookList}
 ]
 
 const router = createRouter({
