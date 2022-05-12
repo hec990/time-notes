@@ -6,14 +6,16 @@
           <h1>注册</h1>
           <input type="text" placeholder="取一个账号吧~" v-model="register.username"/>
           <input type="password" placeholder="输入您的密码" v-model="register.password"/>
-          <button @click="onSignUp">注册</button>
+          <p :class="{'error': register.isError}">{{ register.notice }}</p>
+          <button @click="onRegister">注册</button>
         </div>
       </div>
       <div class="form-container sign-in-container">
         <div class="container-box">
           <h1>登录</h1>
-          <input type="text" placeholder="输入登录账号" v-model="login.username" @keyup.enter="onLogin"/>
-          <input type="password" placeholder="输入登录密码" v-model="login.password" @keyup.enter="onLogin"/>
+          <input type="text" placeholder="输入用户名" v-model="login.username" @keyup.enter="onLogin"/>
+          <input type="password" placeholder="密码" v-model="login.password" @keyup.enter="onLogin"/>
+          <p :class="{'error': login.isError }">{{ login.notice }}</p>
           <button @click="onLogin">登录</button>
         </div>
       </div>
@@ -50,15 +52,31 @@ export default {
 
     const register = reactive({
       username: '',
-      password: ''
+      password: '',
+      notice: "创建账号后，请记住用户名和密码",
+      isError: false
     })
-    const onSignUp = () => {
+    const login = reactive({
+      username: 'admin66',
+      password: '12345678',
+      notice: "输入用户名和密码",
+      isError: false
+    })
+
+    // 注册
+    const onRegister = () => {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(register.username)) {
-        return alert('用户名3~15个字符，仅限于字母数字下划线中文')
+        register.isError = true;
+        register.notice = "用户名3~15个字符，仅限于字母数字下划线中文"
+        return
       }
       if (!/^.{6,16}$/.test(register.password)) {
-        return alert('密码长度为6~16个字符')
+        register.isError = true;
+        register.notice = '密码长度为6~16个字符';
+        return
       }
+      register.isError = false;
+      register.notice = '';
 
       Auth.register({
         username: register.username,
@@ -70,33 +88,46 @@ export default {
 
     }
 
-    const login = reactive({
-      username: 'admin66',
-      password: '12345678'
-    })
+    // 登录
     const onLogin = () => {
       if (!/^[\w\u4e00-\u9fa5]{3,15}$/.test(login.username)) {
-        return alert('用户名3~15个字符，仅限于字母数字下划线中文')
+        login.isError = true;
+        login.notice = '用户名3~15个字符，仅限于字母数字下划线中文'
+        return
       }
       if (!/^.{6,16}$/.test(login.password)) {
-        return alert('密码长度为6~16个字符')
+        login.isError = true;
+        login.notice = '密码长度为6~16个字符';
+        return
       }
+
+      login.isError = false;
+      login.notice = '';
 
       Auth.login({
         username: login.username,
         password: login.password
       }).then((res) => {
         ElMessage.success(res.msg)
+        console.log(res)
         router.replace('/notebooks')
+      }).catch(res => {
+        console.log(res)
+        errorMessage.value = res.msg;
       })
     }
+
+    const passMessage = ref('输入用户名和密码')
+    const errorMessage = ref('');
 
     return {
       isRegisteredPage,
       register,
-      onSignUp,
+      onRegister,
       login,
-      onLogin
+      onLogin,
+      errorMessage,
+      passMessage
     }
   }
 }
@@ -104,4 +135,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/css/login/loginPage";
+
+.error {
+  color: red !important;
+  font-weight: bold;
+}
 </style>
