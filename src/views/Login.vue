@@ -36,12 +36,14 @@
 </template>
 
 <script>
+import {ref} from 'vue';
 export default {
   name: "Login",
-  data() {
+  setup(){
+    const isRegisteredPage = ref(false)
+
     return {
-      // 是否显示注册页面
-      isRegisteredPage: false
+      isRegisteredPage
     }
   }
 }
