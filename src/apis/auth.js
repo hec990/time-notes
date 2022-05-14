@@ -12,7 +12,7 @@ export default {
         return request(URL.REGISTER, 'post', {username, password})
     },
     login({username, password}) {
-        return request(URL.LOGIN, 'port', {username, password})
+        return request(URL.LOGIN, 'post', {username, password})
     },
     logout() {
         return request(URL.LOGOUT)
