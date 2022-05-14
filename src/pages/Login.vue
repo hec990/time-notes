@@ -13,6 +13,7 @@
       <div class="form-container sign-in-container">
         <div class="container-box">
           <h1>登录</h1>
+          <p>测试账号：admin66 | 密码：12345678</p>
           <input type="text" placeholder="输入用户名" v-model="login.username" @keyup.enter="onLogin"/>
           <input type="password" placeholder="密码" v-model="login.password" @keyup.enter="onLogin"/>
           <p :class="{'error': login.isError }">{{ login.notice }}</p>
@@ -57,8 +58,8 @@ export default {
       isError: false
     })
     const login = reactive({
-      username: 'admin66',
-      password: '12345678',
+      username: '',
+      password: '',
       notice: "输入用户名和密码",
       isError: false
     })
