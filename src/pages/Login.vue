@@ -85,10 +85,6 @@ export default {
       }).then(res => {
         ElMessage.success(res.msg)
         router.replace('/notebooks')
-      }).catch(err =>{
-        console.log('error',err)
-        register.isError = true;
-        register.notice = err.msg;
       })
 
     }
@@ -114,19 +110,25 @@ export default {
         password: login.password
       }).then((res) => {
         ElMessage.success(res.msg)
+        console.log(res)
         router.replace('/notebooks')
       }).catch(res => {
-        login.isError = true;
-        login.notice = res.msg;
+        console.log(res)
+        errorMessage.value = res.msg;
       })
     }
+
+    const passMessage = ref('输入用户名和密码')
+    const errorMessage = ref('');
 
     return {
       isRegisteredPage,
       register,
       onRegister,
       login,
-      onLogin
+      onLogin,
+      errorMessage,
+      passMessage
     }
   }
 }
