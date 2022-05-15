@@ -1,19 +1,22 @@
 <template>
   <div class="container">
-    sidebar
+    <sidebarAvatar></sidebarAvatar>
   </div>
 </template>
 
 <script>
+import sidebarAvatar from "./sidebarAvatar.vue";
 export default {
   name: "sidebar",
+  components:{
+    sidebarAvatar
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .container {
-  width: 240px;
-  height: 100vh;
+  width: 220px;
   background-color: #FAFAFA;
 }
 </style>
