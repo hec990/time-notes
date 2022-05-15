@@ -1,19 +1,19 @@
 <template>
   <div class="container">
-    <sidebar></sidebar>
+    sidebar
   </div>
 </template>
 
 <script>
-import sidebar from '../components/sidebar.vue';
 export default {
-  name: "NoteBookList",
-  components:{
-    sidebar
-  }
+  name: "sidebar",
 }
 </script>
 
 <style lang="scss" scoped>
-
+.container {
+  width: 240px;
+  height: 100vh;
+  background-color: #FAFAFA;
+}
 </style>
