@@ -33,6 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$hoverColor: rgba(0, 0, 0, .06);
 
 .container {
   min-height: 90vh;
@@ -58,10 +59,11 @@ export default {
       div {
         text-align: center;
         padding: 15px;
-      }
 
-      div:hover {
-        background: rgba(0, 0, 0, .06);
+        &:hover {
+          background: $hoverColor;
+          color: orange;
+        }
       }
     }
   }
@@ -71,11 +73,11 @@ export default {
       padding: 15px;
       width: 100%;
       text-align: center;
-    }
 
-    .logout:hover {
-      background: rgba(0, 0, 0, .06);
-      color: red;
+      &:hover {
+        background: $hoverColor;
+        color: red;
+      }
     }
   }
 }
