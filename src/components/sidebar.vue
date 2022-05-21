@@ -21,5 +21,7 @@ export default {
 .container {
   width: 220px;
   background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
 }
 </style>

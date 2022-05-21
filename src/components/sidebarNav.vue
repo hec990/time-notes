@@ -5,13 +5,19 @@
         <p></p>
       </div>
       <div class="navList">
-        <div>笔记本详情</div>
-        <div>笔记本列表</div>
-        <div>回收站</div>
+        <router-link to="/home/note">
+          <div>笔记本详情</div>
+        </router-link>
+        <router-link to="/home/notebooks">
+          <div>笔记本列表</div>
+        </router-link>
+        <router-link to="/home/trash">
+          <div>回收站</div>
+        </router-link>
       </div>
     </header>
     <footer>
-      <div class="logout" @click="x">注销登录</div>
+      <div class="logout">注销登录</div>
     </footer>
   </div>
 </template>
@@ -21,12 +27,7 @@ export default {
   name: "sidebarNav",
   setup() {
 
-    const x = () => {
-      console.log('logout')
-    }
-
     return {
-      x
     }
   }
 }
