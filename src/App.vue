@@ -11,4 +11,8 @@
   box-sizing: border-box;
   font-size: 14px;
 }
+a {
+  text-decoration:none;
+  color: inherit;
+}
 </style>
