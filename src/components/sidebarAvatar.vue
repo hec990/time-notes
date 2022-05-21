@@ -25,6 +25,7 @@ export default {
 .container {
   min-height: 50px;
   padding-top: 10px;
+  cursor: pointer;
   .userInfo {
     display: flex;
     align-items: center;

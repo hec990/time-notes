@@ -5,15 +5,14 @@
         <p></p>
       </div>
       <div class="navList">
-        <router-link to="/home/note">
-          <div>笔记本详情</div>
-        </router-link>
-        <router-link to="/home/notebooks">
-          <div>笔记本列表</div>
-        </router-link>
-        <router-link to="/home/trash">
-          <div>回收站</div>
-        </router-link>
+        <template v-for="nav in navList">
+          <router-link :to="nav.path">
+            <div @click="currentlySelected(nav.id)" :class="{active: currentlySelectedIndex === nav.id}">{{
+                nav.name
+              }}
+            </div>
+          </router-link>
+        </template>
       </div>
     </header>
     <footer>
@@ -26,20 +25,45 @@
 import {useRouter} from 'vue-router';
 import Auth from '../apis/auth';
 import {ElMessage} from 'element-plus';
+import {reactive, ref} from "vue";
 
 export default {
   name: "sidebarNav",
   setup() {
     const router = useRouter();
+    const navList = reactive([{
+      id: 0,
+      name: '笔记本详情',
+      path: '/home/note'
+    }, {
+      id: 1,
+      name: '笔记本列表',
+      path: '/home/notebooks'
+    }, {
+      id: 2,
+      name: '回收站',
+      path: 'trash'
+    }])
+
+    const currentlySelectedIndex = ref(1);
+
 
     const logout = () => {
-      Auth.logout().then(res=>{
+      Auth.logout().then(res => {
         router.replace('/');
         ElMessage.success(res.msg)
       })
     }
+
+    const currentlySelected = (id) => {
+      currentlySelectedIndex.value = id;
+    }
+
     return {
-      logout
+      logout,
+      navList,
+      currentlySelectedIndex,
+      currentlySelected,
     }
   }
 }
@@ -47,6 +71,11 @@ export default {
 
 <style lang="scss" scoped>
 $hoverColor: rgba(0, 0, 0, .06);
+
+.active {
+  background-color: $hoverColor;
+  color: orange;
+}
 
 .container {
   min-height: 90vh;
@@ -74,7 +103,6 @@ $hoverColor: rgba(0, 0, 0, .06);
         padding: 15px;
 
         &:hover {
-          background: $hoverColor;
           color: orange;
         }
       }
