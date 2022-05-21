@@ -17,17 +17,29 @@
       </div>
     </header>
     <footer>
-      <div class="logout">注销登录</div>
+      <div @click="logout">注销登录</div>
     </footer>
   </div>
 </template>
 
 <script>
+import {useRouter} from 'vue-router';
+import Auth from '../apis/auth';
+import {ElMessage} from 'element-plus';
+
 export default {
   name: "sidebarNav",
   setup() {
+    const router = useRouter();
 
+    const logout = () => {
+      Auth.logout().then(res=>{
+        router.replace('/');
+        ElMessage.success(res.msg)
+      })
+    }
     return {
+      logout
     }
   }
 }
@@ -70,7 +82,7 @@ $hoverColor: rgba(0, 0, 0, .06);
   }
 
   footer {
-    .logout {
+    div {
       padding: 15px;
       width: 100%;
       text-align: center;
