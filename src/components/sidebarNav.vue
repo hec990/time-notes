@@ -16,7 +16,14 @@
       </div>
     </header>
     <footer>
-      <div @click="logout">注销登录</div>
+      <div @click="logout">
+        <span>
+          <svg class="icon">
+            <use xlink:href="#icon-zhuxiao"></use>
+          </svg>
+        </span>
+        <span>注销登录</span>
+      </div>
     </footer>
   </div>
 </template>

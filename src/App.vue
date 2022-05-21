@@ -15,4 +15,10 @@ a {
   text-decoration:none;
   color: inherit;
 }
+.icon {
+  width: 2em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
 </style>
