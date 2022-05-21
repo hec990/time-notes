@@ -19,6 +19,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  cursor: pointer;
   .line {
     padding: 10px 15px 0 15px;
 
