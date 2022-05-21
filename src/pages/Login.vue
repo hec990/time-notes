@@ -84,9 +84,9 @@ export default {
         password: register.password
       }).then(res => {
         ElMessage.success(res.msg)
-        router.replace('/home')
-      }).catch(err =>{
-        console.log('error',err)
+        router.replace('/home/notebooks')
+      }).catch(err => {
+        console.log('error', err)
         register.isError = true;
         register.notice = err.msg;
       })
@@ -114,7 +114,7 @@ export default {
         password: login.password
       }).then((res) => {
         ElMessage.success(res.msg)
-        router.replace('/home')
+        router.replace('/home/notebooks')
       }).catch(res => {
         login.isError = true;
         login.notice = res.msg;
