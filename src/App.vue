@@ -15,4 +15,7 @@ a {
   text-decoration:none;
   color: inherit;
 }
+body {
+  overflow: hidden; // 隐藏滚动条
+}
 </style>

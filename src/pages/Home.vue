@@ -23,5 +23,8 @@ export default {
 .container {
   min-height: 100vh;
   display: flex;
+  .view {
+    width: 100%;
+  }
 }
 </style>
