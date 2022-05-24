@@ -11,9 +11,9 @@
 
 <script>
 import {useRouter} from 'vue-router';
-import sidebar from '../components/sidebar.vue';
 import Auth from '../apis/auth';
 import {ElMessage} from 'element-plus';
+import sidebar from '../components/sidebar/sidebar.vue';
 
 export default {
   name: "Home",
@@ -37,5 +37,8 @@ export default {
 .container {
   min-height: 100vh;
   display: flex;
+  .view {
+    width: 100%;
+  }
 }
 </style>
