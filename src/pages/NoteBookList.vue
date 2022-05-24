@@ -4,10 +4,10 @@
       <span @click="createNoteBook">新增笔记本</span>
     </header>
     <main>
-      <div class="notebook" v-for="(notebook,index) in notebookList" :key="index">
+      <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
         <div class="title">{{ notebook.title }}</div>
         <div class="operate">
-          <span>{{ notebook.createTime }}</span>
+          <span>{{ notebook.createdAt }}</span>
           <span>删除</span>
           <span>编辑</span>
         </div>
@@ -21,6 +21,7 @@ import Auth from '../apis/auth';
 import {useRouter} from 'vue-router';
 import {ElMessage} from 'element-plus';
 import {reactive} from 'vue';
+import NoteBook from '../apis/notebook'
 
 export default {
   name: "NoteBookList",
@@ -38,23 +39,17 @@ export default {
       console.log('createNoteBook')
     }
 
-    const notebookList = reactive([{
-      id: 0,
-      title: '前端学习笔记',
-      createTime: '2022/5/23 20:20:10',
-    }, {
-      id: 1,
-      title: '日常记录',
-      createTime: '2022/5/23 20:20:10',
-    }, {
-      id: 2,
-      title: '菜谱',
-      createTime: '2022/5/23 20:20:10',
-    }]);
+    let state = reactive({
+      notebookList: []
+    });
+
+    NoteBook.getAll().then(res => {
+      state.notebookList = res.data;
+    })
 
     return {
       createNoteBook,
-      notebookList
+      state
     }
   }
 }
