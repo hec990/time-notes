@@ -4,26 +4,10 @@
       <span @click="createNoteBook">新增笔记本</span>
     </header>
     <main>
-      <div class="notebook">
-        <div class="title">前端学习笔记</div>
+      <div class="notebook" v-for="(notebook,index) in notebookList" :key="index">
+        <div class="title">{{ notebook.title }}</div>
         <div class="operate">
-          <span>2022/5/22/ 20:21:30</span>
-          <span>删除</span>
-          <span>编辑</span>
-        </div>
-      </div>
-      <div class="notebook">
-        <div class="title">日常记录</div>
-        <div class="operate">
-          <span>2022/5/22/ 20:21:30</span>
-          <span>删除</span>
-          <span>编辑</span>
-        </div>
-      </div>
-      <div class="notebook">
-        <div class="title">菜谱</div>
-        <div class="operate">
-          <span>2022/5/22/ 20:21:30</span>
+          <span>{{ notebook.createTime }}</span>
           <span>删除</span>
           <span>编辑</span>
         </div>
@@ -36,6 +20,7 @@
 import Auth from '../apis/auth';
 import {useRouter} from 'vue-router';
 import {ElMessage} from 'element-plus';
+import {reactive} from 'vue';
 
 export default {
   name: "NoteBookList",
@@ -52,8 +37,24 @@ export default {
     const createNoteBook = () => {
       console.log('createNoteBook')
     }
+
+    const notebookList = reactive([{
+      id: 0,
+      title: '前端学习笔记',
+      createTime: '2022/5/23 20:20:10',
+    }, {
+      id: 1,
+      title: '日常记录',
+      createTime: '2022/5/23 20:20:10',
+    }, {
+      id: 2,
+      title: '菜谱',
+      createTime: '2022/5/23 20:20:10',
+    }]);
+
     return {
       createNoteBook,
+      notebookList
     }
   }
 }
@@ -61,6 +62,7 @@ export default {
 
 <style lang="scss" scoped>
 $border: 1px solid #E5E5E5;
+$hover-bgColor: rgba(0, 0, 0, 0.06);
 
 .container {
   display: flex;
@@ -70,6 +72,7 @@ $border: 1px solid #E5E5E5;
   header {
     border: $border;
     padding: 15px 0 15px 15px;
+    margin-bottom: 30px;
 
     span {
       padding: 5px;
@@ -86,10 +89,14 @@ $border: 1px solid #E5E5E5;
     .notebook {
       display: flex;
       justify-content: space-between;
-      min-width: 900px;
+      min-width: 950px;
       padding: 8px;
       border: $border;
       margin: 0 0 5px 0;
+
+      &:hover {
+        background-color: $hover-bgColor;
+      }
 
       .operate {
         span {
