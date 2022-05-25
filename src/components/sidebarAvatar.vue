@@ -19,7 +19,6 @@ export default {
     const name = ref('');
 
     Auth.getInfo().then(res => {
-      console.log(res)
       name.value = res.data.username;
     })
 
