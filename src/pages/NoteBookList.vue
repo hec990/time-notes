@@ -8,7 +8,7 @@
         <div class="title">{{ notebook.title }}</div>
         <div class="operate">
           <span>{{ notebook.formatTime }}</span>
-          <span>删除</span>
+          <span @click="removeNoteBook(notebook.id)">删除</span>
           <span>编辑</span>
         </div>
       </div>
@@ -36,6 +36,7 @@
 import {reactive, ref} from 'vue';
 import NoteBook from '../apis/notebook';
 import {useformatTime} from '../hooks/useformatTime'
+import {ElMessage} from "element-plus";
 
 export default {
   name: "NoteBookList",
@@ -56,15 +57,28 @@ export default {
       NoteBook.addNotebook({title}).then(res => {
         res.data.formatTime = useformatTime(res.data.createdAt)
         state.notebookList.push(res.data)
+        ElMessage.success(`创建成功，新的笔记本名为「${title}」`)
+      }).catch(err => {
+        ElMessage.error(err)
       })
       dialogVisible.value = false;
+    }
+
+    const removeNoteBook = (notebookId) => {
+      NoteBook.deleteNotebook(notebookId).then(res => {
+        state.notebookList.splice(state.notebookList.indexOf(notebookId), 1)
+        ElMessage.success(res.msg)
+      }).catch(err =>{
+        ElMessage.error(err.msg)
+      })
     }
 
     return {
       state,
       dialogVisible,
       input,
-      addNoteBook
+      addNoteBook,
+      removeNoteBook
     }
   }
 }
