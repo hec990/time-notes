@@ -36,6 +36,7 @@
 import {reactive, ref} from 'vue';
 import NoteBook from '../apis/notebook';
 import {useformatTime} from '../hooks/useformatTime'
+import {ElMessage} from "element-plus";
 
 export default {
   name: "NoteBookList",
@@ -56,6 +57,9 @@ export default {
       NoteBook.addNotebook({title}).then(res => {
         res.data.formatTime = useformatTime(res.data.createdAt)
         state.notebookList.push(res.data)
+        ElMessage.success(`创建成功，新的笔记本名为「${title}」`)
+      }).catch(err => {
+        ElMessage.error(err)
       })
       dialogVisible.value = false;
     }
