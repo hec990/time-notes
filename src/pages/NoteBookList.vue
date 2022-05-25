@@ -7,7 +7,7 @@
       <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
         <div class="title">{{ notebook.title }}</div>
         <div class="operate">
-          <span>{{ notebook.createdAt }}</span>
+          <span>{{ notebook.formatTime }}</span>
           <span>删除</span>
           <span>编辑</span>
         </div>
