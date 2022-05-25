@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header>
-      <span @click="createNoteBook">新增笔记本</span>
+      <span @click="dialogVisible = true">新增笔记本</span>
     </header>
     <main>
       <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
@@ -13,20 +13,33 @@
         </div>
       </div>
     </main>
+
+    <el-dialog
+        v-model="dialogVisible"
+        title="新增笔记本"
+        width="30%"
+    >
+      <el-input v-model="input" placeholder="输入笔记本名称"/>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addNoteBook"
+        >确定</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {reactive} from 'vue';
-import NoteBook from '../apis/notebook'
+import {reactive, ref} from 'vue';
+import NoteBook from '../apis/notebook';
+import {useformatTime} from '../hooks/useformatTime'
 
 export default {
   name: "NoteBookList",
   setup() {
-    const createNoteBook = () => {
-      console.log('createNoteBook')
-    }
-
     let state = reactive({
       notebookList: []
     });
@@ -35,9 +48,23 @@ export default {
       state.notebookList = res.data;
     })
 
+    const dialogVisible = ref(false)
+    const input = ref('')
+
+    const addNoteBook = () => {
+      const title = input.value;
+      NoteBook.addNotebook({title}).then(res => {
+        res.data.formatTime = useformatTime(res.data.createdAt)
+        state.notebookList.push(res.data)
+      })
+      dialogVisible.value = false;
+    }
+
     return {
-      createNoteBook,
-      state
+      state,
+      dialogVisible,
+      input,
+      addNoteBook
     }
   }
 }
