@@ -8,7 +8,7 @@
         <div class="title">{{ notebook.title }}</div>
         <div class="operate">
           <span>{{ notebook.formatTime }}</span>
-          <span>删除</span>
+          <span @click="removeNoteBook(notebook.id)">删除</span>
           <span>编辑</span>
         </div>
       </div>
@@ -64,11 +64,21 @@ export default {
       dialogVisible.value = false;
     }
 
+    const removeNoteBook = (notebookId) => {
+      NoteBook.deleteNotebook(notebookId).then(res => {
+        state.notebookList.splice(state.notebookList.indexOf(notebookId), 1)
+        ElMessage.success(res.msg)
+      }).catch(err =>{
+        ElMessage.error(err.msg)
+      })
+    }
+
     return {
       state,
       dialogVisible,
       input,
-      addNoteBook
+      addNoteBook,
+      removeNoteBook
     }
   }
 }
