@@ -8,7 +8,7 @@
       <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
         <div class="title">
           <span>{{ notebook.title }}</span>
-          <span> ({{ notebook.noteCounts }})</span>
+          <span> ({{ notebook.noteCounts ? notebook.noteCounts : '空' }})</span>
         </div>
         <div class="operate">
           <span>{{ notebook.formatTime }}</span>
