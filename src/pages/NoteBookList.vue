@@ -1,11 +1,15 @@
 <template>
   <div class="container">
     <header>
-      <span @click="dialogVisible = true">新增笔记本</span>
+      <span @click="addNoteBookDialogVisible = true">新增笔记本</span>
     </header>
     <main>
+      <p class="notebookCount">笔记本列表〔{{ state.notebookList.length }}〕</p>
       <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
-        <div class="title">{{ notebook.title }}</div>
+        <div class="title">
+          <span>{{ notebook.title }}</span>
+          <span> ({{ notebook.noteCounts ? notebook.noteCounts : '空' }})</span>
+        </div>
         <div class="operate">
           <span>{{ notebook.formatTime }}</span>
           <span @click="removeNoteBook(notebook.id)">删除</span>
@@ -15,14 +19,14 @@
     </main>
 
     <el-dialog
-        v-model="dialogVisible"
+        v-model="addNoteBookDialogVisible"
         title="新增笔记本"
         width="30%"
     >
-      <el-input v-model="input" placeholder="输入笔记本名称"/>
+      <el-input v-model="noteBookTitle" placeholder="输入笔记本名称"/>
       <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="addNoteBookDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="addNoteBook"
         >确定</el-button
         >
@@ -49,11 +53,11 @@ export default {
       state.notebookList = res.data;
     })
 
-    const dialogVisible = ref(false)
-    const input = ref('')
+    const addNoteBookDialogVisible = ref(false)
+    const noteBookTitle = ref('')
 
     const addNoteBook = () => {
-      const title = input.value;
+      const title = noteBookTitle.value;
       NoteBook.addNotebook({title}).then(res => {
         res.data.formatTime = useformatTime(res.data.createdAt)
         state.notebookList.push(res.data)
@@ -61,22 +65,22 @@ export default {
       }).catch(err => {
         ElMessage.error(err)
       })
-      dialogVisible.value = false;
+      addNoteBookDialogVisible.value = false;
     }
 
     const removeNoteBook = (notebookId) => {
       NoteBook.deleteNotebook(notebookId).then(res => {
         state.notebookList.splice(state.notebookList.indexOf(notebookId), 1)
         ElMessage.success(res.msg)
-      }).catch(err =>{
+      }).catch(err => {
         ElMessage.error(err.msg)
       })
     }
 
     return {
       state,
-      dialogVisible,
-      input,
+      addNoteBookDialogVisible,
+      noteBookTitle,
       addNoteBook,
       removeNoteBook
     }
@@ -110,6 +114,14 @@ $hover-bgColor: rgba(0, 0, 0, 0.06);
     flex-direction: column;
     align-items: center;
 
+    .notebookCount {
+      position: relative;
+      top: 0;
+      left: -416px;
+      padding: 0 0 10px 0;
+      font-weight: bold;
+    }
+
     .notebook {
       display: flex;
       justify-content: space-between;
@@ -117,6 +129,15 @@ $hover-bgColor: rgba(0, 0, 0, 0.06);
       padding: 8px;
       border: $border;
       margin: 0 0 5px 0;
+
+      .title {
+        display: flex;
+
+        span:nth-child(2) {
+          margin-left: 5px;
+          font-size: 12px;
+        }
+      }
 
       &:hover {
         background-color: $hover-bgColor;
