@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <header>
-      <span @click="dialogVisible = true">新增笔记本</span>
+      <span @click="addNoteBookDialogVisible = true">新增笔记本</span>
     </header>
     <main>
       <p class="notebookCount">笔记本列表〔{{ state.notebookList.length }}〕</p>
@@ -19,14 +19,14 @@
     </main>
 
     <el-dialog
-        v-model="dialogVisible"
+        v-model="addNoteBookDialogVisible"
         title="新增笔记本"
         width="30%"
     >
-      <el-input v-model="input" placeholder="输入笔记本名称"/>
+      <el-input v-model="noteBookTitle" placeholder="输入笔记本名称"/>
       <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="addNoteBookDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="addNoteBook"
         >确定</el-button
         >
@@ -53,11 +53,11 @@ export default {
       state.notebookList = res.data;
     })
 
-    const dialogVisible = ref(false)
-    const input = ref('')
+    const addNoteBookDialogVisible = ref(false)
+    const noteBookTitle = ref('')
 
     const addNoteBook = () => {
-      const title = input.value;
+      const title = noteBookTitle.value;
       NoteBook.addNotebook({title}).then(res => {
         res.data.formatTime = useformatTime(res.data.createdAt)
         state.notebookList.push(res.data)
@@ -65,7 +65,7 @@ export default {
       }).catch(err => {
         ElMessage.error(err)
       })
-      dialogVisible.value = false;
+      addNoteBookDialogVisible.value = false;
     }
 
     const removeNoteBook = (notebookId) => {
@@ -79,8 +79,8 @@ export default {
 
     return {
       state,
-      dialogVisible,
-      input,
+      addNoteBookDialogVisible,
+      noteBookTitle,
       addNoteBook,
       removeNoteBook
     }
