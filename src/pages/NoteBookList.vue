@@ -4,8 +4,12 @@
       <span @click="dialogVisible = true">新增笔记本</span>
     </header>
     <main>
+      <p class="notebookCount">笔记本列表〔{{ state.notebookList.length }}〕</p>
       <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
-        <div class="title">{{ notebook.title }}</div>
+        <div class="title">
+          <span>{{ notebook.title }}</span>
+          <span> ({{ notebook.noteCounts }})</span>
+        </div>
         <div class="operate">
           <span>{{ notebook.formatTime }}</span>
           <span @click="removeNoteBook(notebook.id)">删除</span>
@@ -68,7 +72,7 @@ export default {
       NoteBook.deleteNotebook(notebookId).then(res => {
         state.notebookList.splice(state.notebookList.indexOf(notebookId), 1)
         ElMessage.success(res.msg)
-      }).catch(err =>{
+      }).catch(err => {
         ElMessage.error(err.msg)
       })
     }
@@ -110,6 +114,14 @@ $hover-bgColor: rgba(0, 0, 0, 0.06);
     flex-direction: column;
     align-items: center;
 
+    .notebookCount {
+      position: relative;
+      top: 0;
+      left: -416px;
+      padding: 0 0 10px 0;
+      font-weight: bold;
+    }
+
     .notebook {
       display: flex;
       justify-content: space-between;
@@ -117,6 +129,15 @@ $hover-bgColor: rgba(0, 0, 0, 0.06);
       padding: 8px;
       border: $border;
       margin: 0 0 5px 0;
+
+      .title {
+        display: flex;
+
+        span:nth-child(2) {
+          margin-left: 5px;
+          font-size: 12px;
+        }
+      }
 
       &:hover {
         background-color: $hover-bgColor;
