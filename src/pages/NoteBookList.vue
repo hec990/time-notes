@@ -23,7 +23,7 @@
         title="新增笔记本"
         width="30%"
     >
-      <el-input v-model="noteBookTitle" placeholder="输入笔记本名称"/>
+      <el-input v-model="noteBookTitle" placeholder="输入笔记本名称" @keyup.enter="addNoteBook"/>
       <template #footer>
       <span class="dialog-footer">
         <el-button @click="addNoteBookDialogVisible = false">取消</el-button>
