@@ -22,6 +22,7 @@
         v-model="addNoteBookDialogVisible"
         title="新增笔记本"
         width="30%"
+        @close="closeDialogInputVal"
     >
       <el-input v-model="noteBookTitle" placeholder="输入笔记本名称" @keyup.enter="addNoteBook"/>
       <template #footer>
@@ -57,17 +58,18 @@ export default {
     const noteBookTitle = ref('')
 
     const addNoteBook = () => {
-      if(noteBookTitle.value !== ''){
+      if (noteBookTitle.value !== '') {
         const title = noteBookTitle.value;
         NoteBook.addNotebook({title}).then(res => {
           res.data.formatTime = useformatTime(res.data.createdAt)
           state.notebookList.push(res.data)
           ElMessage.success(`创建成功，新的笔记本名为「${title}」`)
+          noteBookTitle.value = '';
         }).catch(err => {
           ElMessage.error(err)
         })
         addNoteBookDialogVisible.value = false;
-      }else {
+      } else {
         return ElMessage.error('笔记本名称不能为空')
       }
     }
@@ -81,12 +83,18 @@ export default {
       })
     }
 
+    const closeDialogInputVal = () => {
+      // 清空dialog 输入框的值
+      noteBookTitle.value = ''
+    }
+
     return {
       state,
       addNoteBookDialogVisible,
       noteBookTitle,
       addNoteBook,
-      removeNoteBook
+      removeNoteBook,
+      closeDialogInputVal
     }
   }
 }
