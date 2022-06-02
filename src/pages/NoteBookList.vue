@@ -5,16 +5,21 @@
     </header>
     <main>
       <p class="notebookCount">笔记本列表〔{{ state.notebookList.length }}〕</p>
-      <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
-        <div class="title">
-          <span>{{ notebook.title }}</span>
-          <span> ({{ notebook.noteCounts ? notebook.noteCounts : '空' }})</span>
-        </div>
-        <div class="operate">
-          <span>{{ notebook.formatTime }}</span>
-          <span @click="removeNoteBook(notebook.id)">删除</span>
-          <span>编辑</span>
-        </div>
+      <template v-if="state.notebookList.length !== 0">
+        <div class="notebook" v-for="notebook in state.notebookList" :key="notebook.id">
+          <div class="title">
+            <span>{{ notebook.title }}</span>
+            <span> ({{ notebook.noteCounts ? notebook.noteCounts : '空' }})</span>
+          </div>
+          <div class="operate">
+            <span>{{ notebook.formatTime }}</span>
+            <span @click="removeNoteBook(notebook.id)">删除</span>
+            <span>编辑</span>
+          </div>
+        </div >
+      </template>
+      <div class="empty" v-else>
+        当前笔记本列表为空，请点击左上角进行添加
       </div>
     </main>
 
@@ -162,5 +167,12 @@ $hover-bgColor: rgba(0, 0, 0, 0.06);
       }
     }
   }
+}
+
+.empty {
+  font-size: 36px;
+  color: #ccc;
+  text-align: center;
+  margin-top: 10%;
 }
 </style>
