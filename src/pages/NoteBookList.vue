@@ -57,15 +57,19 @@ export default {
     const noteBookTitle = ref('')
 
     const addNoteBook = () => {
-      const title = noteBookTitle.value;
-      NoteBook.addNotebook({title}).then(res => {
-        res.data.formatTime = useformatTime(res.data.createdAt)
-        state.notebookList.push(res.data)
-        ElMessage.success(`创建成功，新的笔记本名为「${title}」`)
-      }).catch(err => {
-        ElMessage.error(err)
-      })
-      addNoteBookDialogVisible.value = false;
+      if(noteBookTitle.value !== ''){
+        const title = noteBookTitle.value;
+        NoteBook.addNotebook({title}).then(res => {
+          res.data.formatTime = useformatTime(res.data.createdAt)
+          state.notebookList.push(res.data)
+          ElMessage.success(`创建成功，新的笔记本名为「${title}」`)
+        }).catch(err => {
+          ElMessage.error(err)
+        })
+        addNoteBookDialogVisible.value = false;
+      }else {
+        return ElMessage.error('笔记本名称不能为空')
+      }
     }
 
     const removeNoteBook = (notebookId) => {
