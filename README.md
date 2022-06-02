@@ -1,7 +1,18 @@
-# Vue 3 + Vite
+### 时光笔记
+这个是一个使用 Vue3 开发的前后端分离项目。
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+### 开始使用
+#### 安装
+```html
+yarn add install
+```
 
-## Recommended IDE Setup
+#### 预览
+```html
+yarn dev
+```
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+#### 打包发布
+```html
+yarn build
+```
