@@ -20,9 +20,7 @@
     <footer>
       <div @click="logout">
         <span>
-          <svg class="icon">
-            <use xlink:href="#icon-zhuxiao"></use>
-          </svg>
+          <time-icon name="zhuxiao"></time-icon>
         </span>
         <span>注销登录</span>
       </div>
@@ -137,6 +135,10 @@ $hoverColor: rgba(0, 0, 0, .06);
       padding: 15px;
       width: 100%;
       text-align: center;
+
+      span:nth-child(1) {
+        padding: 0 5px;
+      }
 
       &:hover {
         background: $hoverColor;
