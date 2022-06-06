@@ -7,9 +7,11 @@
       <div class="navList">
         <template v-for="nav in navList">
           <router-link :to="nav.path">
-            <div @click="currentlySelected(nav.id)" :class="{active: currentlySelectedIndex === nav.id}">{{
-                nav.name
-              }}
+            <div @click="currentlySelected(nav.id)" :class="{active: currentlySelectedIndex === nav.id}">
+              <div class="navIcon">
+                <time-icon :name="nav.icon"></time-icon>
+              </div>
+              <div class="navName" v-if="isShowSidebarText">{{ nav.name }}</div>
             </div>
           </router-link>
         </template>
@@ -18,11 +20,9 @@
     <footer>
       <div @click="logout">
         <span>
-          <svg class="icon">
-            <use xlink:href="#icon-zhuxiao"></use>
-          </svg>
+          <time-icon name="zhuxiao"></time-icon>
         </span>
-        <span>注销登录</span>
+        <span v-if="isShowSidebarText">注销登录</span>
       </div>
     </footer>
   </div>
@@ -32,7 +32,8 @@
 import {useRouter} from 'vue-router';
 import Auth from '../../apis/auth';
 import {ElMessage} from 'element-plus';
-import {reactive, ref} from "vue";
+import {reactive, ref,inject} from "vue";
+import timeIcon from "../time-ui/timeIcon.vue";
 
 export default {
   name: "sidebarNav",
@@ -41,18 +42,22 @@ export default {
     const navList = reactive([{
       id: 0,
       name: '笔记本详情',
+      icon: 'NoteDetail',
       path: '/home/note'
     }, {
       id: 1,
       name: '笔记本列表',
+      icon: 'NoteBookList',
       path: '/home/notebooks'
     }, {
       id: 2,
-      name: '回收站',
+      name: '笔记回收站',
+      icon: 'huishouzhan',
       path: 'trash'
     }])
 
     const currentlySelectedIndex = ref(1);
+    const isShowSidebarText = inject('isShowSidebarText');
 
 
     const logout = () => {
@@ -71,7 +76,11 @@ export default {
       navList,
       currentlySelectedIndex,
       currentlySelected,
+      isShowSidebarText
     }
+  },
+  components: {
+    timeIcon
   }
 }
 </script>
@@ -105,9 +114,16 @@ $hoverColor: rgba(0, 0, 0, .06);
       flex-direction: column;
       margin-top: 15px;
 
-      div {
-        text-align: center;
+      > a > div {
         padding: 15px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .navIcon {
+          padding: 0 10px;
+        }
 
         &:hover {
           color: orange;
@@ -121,6 +137,10 @@ $hoverColor: rgba(0, 0, 0, .06);
       padding: 15px;
       width: 100%;
       text-align: center;
+
+      span:nth-child(1) {
+        padding: 0 5px;
+      }
 
       &:hover {
         background: $hoverColor;

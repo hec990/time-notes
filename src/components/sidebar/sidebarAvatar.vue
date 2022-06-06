@@ -4,14 +4,14 @@
       <div class="logo">
         {{ name.charAt(0) }}
       </div>
-      <div class="name">{{ name + '的空间' }}</div>
+      <div class="name" v-if="isShowSidebarText">{{ name + '的空间' }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import {ref} from 'vue';
-import Auth from '../../apis/auth';
+import {ref, inject} from 'vue';
+import Auth from '../apis/auth'
 
 export default {
   name: "sidebarAvatar",
@@ -22,8 +22,11 @@ export default {
       name.value = res.data.username;
     })
 
+    const isShowSidebarText = inject('isShowSidebarText')
+
     return {
-      name
+      name,
+      isShowSidebarText
     }
   }
 }
@@ -39,21 +42,17 @@ export default {
     display: flex;
     align-items: center;
     padding: 5px 0 5px 10px;
-    //border-radius: .25rem;
-
-    &:hover {
-      background: rgba(0, 0, 0, .06);
-    }
 
     .logo {
       width: 48px;
       height: 48px;
       font-size: 24px;
-      color: orange;
+      color: white;
       border: 2px solid #ccc;
       border-radius: 50%;
       text-align: center;
       line-height: 40px;
+      background-color: orange;
     }
 
     .name {
