@@ -47,11 +47,12 @@ export default {
       width: 48px;
       height: 48px;
       font-size: 24px;
-      color: orange;
+      color: white;
       border: 2px solid #ccc;
       border-radius: 50%;
       text-align: center;
       line-height: 40px;
+      background-color: orange;
     }
 
     .name {
