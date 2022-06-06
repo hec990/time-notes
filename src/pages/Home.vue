@@ -90,5 +90,9 @@ export default {
       border-radius: 5px;
     }
   }
+
+  .view {
+    width: 100%;
+  }
 }
 </style>
