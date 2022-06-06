@@ -39,11 +39,6 @@ export default {
     display: flex;
     align-items: center;
     padding: 5px 0 5px 10px;
-    //border-radius: .25rem;
-
-    &:hover {
-      background: rgba(0, 0, 0, .06);
-    }
 
     .logo {
       width: 48px;
