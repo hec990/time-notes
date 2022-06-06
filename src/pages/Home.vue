@@ -24,7 +24,7 @@
 <script>
 import {ref, provide, readonly} from "vue";
 import {useRouter} from 'vue-router';
-import sidebar from '../components/sidebar.vue';
+import sidebar from '../components/sidebar/sidebar.vue';
 import Auth from '../apis/auth';
 import {ElMessage} from 'element-plus';
 

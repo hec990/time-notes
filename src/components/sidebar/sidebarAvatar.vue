@@ -11,7 +11,7 @@
 
 <script>
 import {ref, inject} from 'vue';
-import Auth from '../apis/auth'
+import Auth from '../../apis/auth'
 
 export default {
   name: "sidebarAvatar",

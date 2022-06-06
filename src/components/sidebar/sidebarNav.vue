@@ -33,7 +33,7 @@ import {useRouter} from 'vue-router';
 import Auth from '../../apis/auth';
 import {ElMessage} from 'element-plus';
 import {reactive, ref,inject} from "vue";
-import timeIcon from "../time-ui/timeIcon.vue";
+import timeIcon from "../../time-ui/timeIcon.vue";
 
 export default {
   name: "sidebarNav",
