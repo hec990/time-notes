@@ -2,13 +2,17 @@
   <div class="container">
     <div class="sidebar">
       <sidebar></sidebar>
-      <div class="contraction" @click="x">
-        <svg class="icon" v-if="bool">
-          <use xlink:href="#icon-jiantou-right"></use>
-        </svg>
-        <svg class="icon" v-else>
-          <use xlink:href="#icon-jiantou-left"></use>
-        </svg>
+      <div class="contraction" @click="changeIsShow">
+        <template v-if="isShowSidebarText">
+          <svg class="icon">
+            <use xlink:href="#icon-jiantou-left"></use>
+          </svg>
+        </template>
+        <template v-else>
+          <svg class="icon">
+            <use xlink:href="#icon-jiantou-right"></use>
+          </svg>
+        </template>
       </div>
     </div>
     <div class="view">
@@ -18,7 +22,7 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {ref, provide, readonly} from "vue";
 import {useRouter} from 'vue-router';
 import sidebar from '../components/sidebar.vue';
 import Auth from '../apis/auth';
@@ -36,16 +40,19 @@ export default {
       }
     })
 
-    const bool = ref(true)
+    // 是否显示侧边栏文字
+    const isShowSidebarText = ref(true);
 
-    const x = () => {
-      console.log('x')
-      bool.value = !bool.value;
+    const changeIsShow = () => {
+      isShowSidebarText.value = !isShowSidebarText.value;
     }
 
+
+    provide("isShowSidebarText", readonly(isShowSidebarText))
+
     return {
-      x,
-      bool
+      changeIsShow,
+      isShowSidebarText
     }
   },
   components: {
@@ -78,6 +85,7 @@ export default {
       top: 50px;
       right: 5px;
       text-align: center;
+      line-height: 24px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }

@@ -4,13 +4,13 @@
       <div class="logo">
         {{ name.charAt(0) }}
       </div>
-      <div class="name">{{ name + '的空间' }}</div>
+      <div class="name" v-if="isShowSidebarText">{{ name + '的空间' }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import {ref} from 'vue';
+import {ref, inject} from 'vue';
 import Auth from '../apis/auth'
 
 export default {
@@ -22,8 +22,11 @@ export default {
       name.value = res.data.username;
     })
 
+    const isShowSidebarText = inject('isShowSidebarText')
+
     return {
-      name
+      name,
+      isShowSidebarText
     }
   }
 }

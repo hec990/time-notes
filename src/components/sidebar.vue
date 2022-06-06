@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :style="{width: isShowSidebarText ? '210px' : '90px'}">
     <sidebarAvatar></sidebarAvatar>
     <sidebarNav></sidebarNav>
   </div>
@@ -8,18 +8,26 @@
 <script>
 import sidebarAvatar from "./sidebarAvatar.vue";
 import sidebarNav from "./sidebarNav.vue";
+import {inject} from 'vue';
+
 export default {
   name: "sidebar",
-  components:{
+  components: {
     sidebarAvatar,
     sidebarNav
+  },
+  setup() {
+    const isShowSidebarText = inject('isShowSidebarText');
+
+    return {
+      isShowSidebarText
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .container {
-  width: 220px;
   background-color: #FAFAFA;
   display: flex;
   flex-direction: column;

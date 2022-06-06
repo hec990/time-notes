@@ -11,7 +11,7 @@
               <div class="navIcon">
                 <time-icon :name="nav.icon"></time-icon>
               </div>
-              <div class="navName">{{ nav.name }}</div>
+              <div class="navName" v-if="isShowSidebarText">{{ nav.name }}</div>
             </div>
           </router-link>
         </template>
@@ -22,7 +22,7 @@
         <span>
           <time-icon name="zhuxiao"></time-icon>
         </span>
-        <span>注销登录</span>
+        <span v-if="isShowSidebarText">注销登录</span>
       </div>
     </footer>
   </div>
@@ -32,7 +32,7 @@
 import {useRouter} from 'vue-router';
 import Auth from '../apis/auth';
 import {ElMessage} from 'element-plus';
-import {reactive, ref} from "vue";
+import {reactive, ref,inject} from "vue";
 import timeIcon from "../time-ui/timeIcon.vue";
 
 export default {
@@ -57,6 +57,7 @@ export default {
     }])
 
     const currentlySelectedIndex = ref(1);
+    const isShowSidebarText = inject('isShowSidebarText');
 
 
     const logout = () => {
@@ -75,6 +76,7 @@ export default {
       navList,
       currentlySelectedIndex,
       currentlySelected,
+      isShowSidebarText
     }
   },
   components: {
