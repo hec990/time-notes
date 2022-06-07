@@ -28,7 +28,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  background-color: #FAFAFA;
+  background-color: #f2f3f7;
   display: flex;
   flex-direction: column;
 }
