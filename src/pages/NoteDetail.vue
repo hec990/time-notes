@@ -5,7 +5,7 @@
         <el-dropdown @command="handleCommand">
           <div class="notebook-title">
             <span>{{ curBook }}</span>
-            <time-icon name="tianjia" size="20"></time-icon>
+            <time-icon name="tianjia" :size="20" class="arrow"></time-icon>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
@@ -17,7 +17,7 @@
           </template>
         </el-dropdown>
         <span title="添加笔记" class="addNote">
-          <time-icon name="tianjia" size="20"></time-icon>
+          <time-icon name="tianjia" :size="20"></time-icon>
         </span>
       </div>
       <div class="noteList">
@@ -102,6 +102,7 @@ export default {
 $fontColor: #bfbfbf;
 $borderColor: #edf1f7;
 
+
 .container {
   .note-box {
     border: 1px solid $borderColor;
@@ -121,18 +122,26 @@ $borderColor: #edf1f7;
         border-radius: 4px;
         padding: 5px;
         min-width: 150px;
+        min-height: 32px;
         text-align: center;
         margin: 0 12px 0 8px;
 
         span {
           margin-right: 5px;
         }
+
+        .arrow {
+          position: absolute;
+          top: 6px;
+          right: 20px;
+        }
       }
 
       .addNote {
         border: 1px solid #d1d6d6;
         border-radius: 4px;
-        padding: 3px;
+        padding: 5px;
+        display: flex;
       }
     }
 
