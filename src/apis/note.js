@@ -1,4 +1,5 @@
 import request from '../helpers/request'
+import {useformatTime} from "../hooks/useformatTime";
 
 const URL = {
     GET: '/notes/from/:notebookId',
@@ -12,6 +13,9 @@ export default {
         return new Promise((resolve, reject) => {
             request(URL.GET.replace(':notebookId', notebookId))
                 .then(res => {
+                    res.data.forEach(note => {
+                        note.formatTime = useformatTime(note.createdAt)
+                    })
                     resolve(res)
                 }).catch(err => {
                 reject(err)

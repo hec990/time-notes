@@ -25,13 +25,9 @@
           <span>更新时间</span>
           <span>笔记名称</span>
         </div>
-        <div class="note">
-          <span>2022/5/20</span>
-          <span>HTML</span>
-        </div>
-        <div class="note">
-          <span>2022/5/20</span>
-          <span>CSS</span>
+        <div class="note" v-for="note in notes" :key="note.id">
+          <span>{{ note.formatTime.slice(0, 10) }}</span>
+          <span>{{ note.title }}</span>
         </div>
       </div>
     </div>
@@ -55,6 +51,7 @@ import {useRouter} from 'vue-router';
 import {ElMessage} from 'element-plus';
 import timeIcon from "../time-ui/timeIcon.vue";
 import NoteBook from '../apis/notebook';
+import Note from '../apis/note'
 
 export default {
   name: "NoteDetail",
@@ -71,10 +68,15 @@ export default {
 
     const NoteBookList = ref([])
     const curBook = ref('')
+    const notes = ref([])
 
     NoteBook.getAll().then(res => {
       NoteBookList.value = res.data;
       curBook.value = NoteBookList.value[0].title;
+
+      Note.getAll({notebookId: NoteBookList.value[0].id}).then(res => {
+        notes.value = res.data;
+      })
     })
 
     const handleCommand = (notebook) => {
@@ -82,14 +84,17 @@ export default {
         router.replace('/home/trash');
       }
       curBook.value = notebook.title;
-      console.log(notebook)
+      Note.getAll({notebookId: notebook.id}).then(res => {
+        notes.value = res.data;
+      })
     }
 
     return {
       content,
       NoteBookList,
       handleCommand,
-      curBook
+      curBook,
+      notes
     }
   },
   components: {
@@ -101,7 +106,6 @@ export default {
 <style lang="scss" scoped>
 $fontColor: #bfbfbf;
 $borderColor: #edf1f7;
-
 
 .container {
   .note-box {
