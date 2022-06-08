@@ -25,7 +25,7 @@
           <span>更新时间</span>
           <span>笔记名称</span>
         </div>
-        <div class="note" v-for="note in notes" :key="note.id">
+        <div class="note" v-for="note in notes" :key="note.id" @click="x(note)" :class="{active:active === note.id}">
           <span>{{ note.formatTime.slice(0, 10) }}</span>
           <span>{{ note.title }}</span>
         </div>
@@ -57,7 +57,6 @@ export default {
   name: "NoteDetail",
   setup() {
     const router = useRouter();
-    const content = ref('')
 
     Auth.getInfo().then(res => {
       if (!res.isLogin) {
@@ -68,7 +67,9 @@ export default {
 
     const NoteBookList = ref([])
     const curBook = ref('')
+    const content = ref('')
     const notes = ref([])
+    const active = ref('')
 
     NoteBook.getAll().then(res => {
       NoteBookList.value = res.data;
@@ -89,12 +90,18 @@ export default {
       })
     }
 
+    const x = (note) => {
+      active.value = note.id;
+    }
+
     return {
       content,
       NoteBookList,
       handleCommand,
       curBook,
-      notes
+      notes,
+      x,
+      active
     }
   },
   components: {
@@ -106,6 +113,9 @@ export default {
 <style lang="scss" scoped>
 $fontColor: #bfbfbf;
 $borderColor: #edf1f7;
+.active {
+  color: #0983e3;
+}
 
 .container {
   .note-box {
