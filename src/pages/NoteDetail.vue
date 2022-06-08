@@ -2,13 +2,21 @@
   <div class="container">
     <div class="note-box">
       <div class="operate">
-        <el-cascader
-            v-model="value"
-            :options="options"
-            :props="props"
-            @change="handleChange"
-        />
-        <span title="添加笔记" @click="addNote">
+        <el-dropdown @command="handleCommand">
+          <div class="notebook-title">
+            <span>{{ curBook }}</span>
+            <time-icon name="tianjia" size="20"></time-icon>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item v-for="(notebook,index) in NoteBookList" :key="index" :command="notebook">
+                {{ notebook.title }}
+              </el-dropdown-item>
+              <el-dropdown-item command="trash">回收站</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <span title="添加笔记" class="addNote">
           <time-icon name="tianjia" size="20"></time-icon>
         </span>
       </div>
@@ -46,11 +54,13 @@ import Auth from '../apis/auth';
 import {useRouter} from 'vue-router';
 import {ElMessage} from 'element-plus';
 import timeIcon from "../time-ui/timeIcon.vue";
+import NoteBook from '../apis/notebook';
 
 export default {
   name: "NoteDetail",
   setup() {
     const router = useRouter();
+    const content = ref('')
 
     Auth.getInfo().then(res => {
       if (!res.isLogin) {
@@ -59,41 +69,27 @@ export default {
       }
     })
 
-    const content = ref('')
+    const NoteBookList = ref([])
+    const curBook = ref('')
 
+    NoteBook.getAll().then(res => {
+      NoteBookList.value = res.data;
+      curBook.value = NoteBookList.value[0].title;
+    })
 
-    const addNote = () => {
-      console.log('添加笔记')
-    }
-
-    const value = ref([])
-
-    const props = {
-      expandTrigger: 'hover',
-    }
-
-    const handleChange = (value) => {
-      console.log(value)
-    }
-
-    const options = [
-      {
-        value: 1,
-        label: '前端学习笔记',
-      },
-      {
-        value: 2,
-        label: '家常菜',
+    const handleCommand = (notebook) => {
+      if (notebook === 'trash') {
+        router.replace('/home/trash');
       }
-    ]
+      curBook.value = notebook.title;
+      console.log(notebook)
+    }
 
     return {
       content,
-      value,
-      props,
-      handleChange,
-      options,
-      addNote
+      NoteBookList,
+      handleCommand,
+      curBook
     }
   },
   components: {
@@ -110,44 +106,53 @@ $borderColor: #edf1f7;
   .note-box {
     border: 1px solid $borderColor;
     background-color: #fafafa;
+    width: 240px;
 
     .operate {
       display: flex;
       align-items: center;
-      padding: 8px 10px 5px 10px;
+      padding: 10px 0 8px 0;
 
-      span {
+      .notebook-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border: 1px solid #d1d6d6;
-        margin: 0 0 0 15px;
+        border-radius: 4px;
+        padding: 5px;
+        min-width: 150px;
+        text-align: center;
+        margin: 0 12px 0 8px;
+
+        span {
+          margin-right: 5px;
+        }
+      }
+
+      .addNote {
+        border: 1px solid #d1d6d6;
         border-radius: 4px;
         padding: 3px;
       }
     }
 
     .noteList {
+      > div > span {
+        flex: 1;
+        font-size: 12px;
+        padding: 5px;
+      }
+
       .note-details {
         width: 100%;
         display: flex;
-        margin-top: 2px;
         border-bottom: 1px solid $borderColor;
-
-        span {
-          flex: 1;
-          text-align: center;
-          padding: 5px;
-          font-size: 12px;
-        }
+        text-align: center;
       }
 
       .note {
         display: flex;
-
-        span {
-          flex: 1;
-          text-align: center;
-          font-size: 12px;
-          padding: 5px;
-        }
+        text-align: center;
 
         &:hover {
           background-color: #edf1f7;
