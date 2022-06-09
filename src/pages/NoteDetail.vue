@@ -4,7 +4,7 @@
       <div class="operate">
         <el-dropdown @command="handleCommand">
           <div class="notebook-title">
-            <span>{{ curBook }}</span>
+            <span>{{ curBookTitle }}</span>
             <time-icon name="tianjia" :size="20" class="arrow"></time-icon>
           </div>
           <template #dropdown>
@@ -66,15 +66,13 @@ export default {
     })
 
     const NoteBookList = ref([])
-    const curBook = ref('')
-    const content = ref('')
-    const notes = ref([])
-    const active = ref('')
+    const curBookTitle = ref([])
 
     NoteBook.getAll().then(res => {
       NoteBookList.value = res.data;
-      curBook.value = NoteBookList.value[0].title;
+      curBookTitle.value = NoteBookList.value[0].title;
 
+      // 获取第一个笔记本的笔记列表
       Note.getAll({notebookId: NoteBookList.value[0].id}).then(res => {
         notes.value = res.data;
       })
@@ -84,12 +82,16 @@ export default {
       if (notebook === 'trash') {
         router.replace('/home/trash');
       }
-      curBook.value = notebook.title;
+      curBookTitle.value = notebook.title;
+
       Note.getAll({notebookId: notebook.id}).then(res => {
         notes.value = res.data;
       })
     }
 
+    const notes = ref([])
+    const active = ref('')
+    const content = ref('')
     const x = (note) => {
       active.value = note.id;
     }
@@ -98,7 +100,7 @@ export default {
       content,
       NoteBookList,
       handleCommand,
-      curBook,
+      curBookTitle,
       notes,
       x,
       active
