@@ -4,12 +4,12 @@
       <div class="operate">
         <el-dropdown @command="handleCommand">
           <div class="notebook-title">
-            <span>{{ curBookTitle }}</span>
+            <span>{{ curBook.title }}</span>
             <time-icon name="tianjia" :size="20" class="arrow"></time-icon>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item v-for="(notebook,index) in NoteBookList" :key="index" :command="notebook">
+              <el-dropdown-item v-for="(notebook,index) in notebooks" :key="index" :command="notebook">
                 {{ notebook.title }}
               </el-dropdown-item>
               <el-dropdown-item command="trash">回收站</el-dropdown-item>
@@ -26,8 +26,10 @@
           <span>笔记名称</span>
         </div>
         <div class="note" v-for="note in notes" :key="note.id" @click="x(note)" :class="{active:active === note.id}">
-          <span>{{ note.formatTime.slice(0, 10) }}</span>
-          <span>{{ note.title }}</span>
+          <router-link :to="`/home/note?noteId=${note.id}&notebookId=${curBook.id}`">
+            <span>{{ note.formatTime.slice(0, 10) }}</span>
+            <span>{{ note.title }}</span>
+          </router-link>
         </div>
       </div>
     </div>
@@ -47,7 +49,7 @@
 <script>
 import {ref} from "vue";
 import Auth from '../apis/auth';
-import {useRouter} from 'vue-router';
+import {useRouter, useRoute} from 'vue-router';
 import {ElMessage} from 'element-plus';
 import timeIcon from "../time-ui/timeIcon.vue";
 import NoteBook from '../apis/notebook';
@@ -57,6 +59,7 @@ export default {
   name: "NoteDetail",
   setup() {
     const router = useRouter();
+    const route = useRoute();
 
     Auth.getInfo().then(res => {
       if (!res.isLogin) {
@@ -65,15 +68,15 @@ export default {
       }
     })
 
-    const NoteBookList = ref([])
-    const curBookTitle = ref([])
+    const notebooks = ref([])
+    const curBook = ref({})
 
     NoteBook.getAll().then(res => {
-      NoteBookList.value = res.data;
-      curBookTitle.value = NoteBookList.value[0].title;
+      notebooks.value = res.data;
+      curBook.value = notebooks.value.find(notebook => notebook.id === route.query.notebookId) || notebooks.value[0] || {}
 
       // 获取第一个笔记本的笔记列表
-      Note.getAll({notebookId: NoteBookList.value[0].id}).then(res => {
+      Note.getAll({notebookId: curBook.value.id}).then(res => {
         notes.value = res.data;
       })
     })
@@ -82,9 +85,9 @@ export default {
       if (notebook === 'trash') {
         router.replace('/home/trash');
       }
-      curBookTitle.value = notebook.title;
+      curBook.value = notebook;
 
-      Note.getAll({notebookId: notebook.id}).then(res => {
+      Note.getAll({notebookId: curBook.value.id}).then(res => {
         notes.value = res.data;
       })
     }
@@ -98,12 +101,12 @@ export default {
 
     return {
       content,
-      NoteBookList,
+      notebooks,
       handleCommand,
-      curBookTitle,
       notes,
       x,
-      active
+      active,
+      curBook
     }
   },
   components: {
@@ -177,8 +180,16 @@ $borderColor: #edf1f7;
       }
 
       .note {
-        display: flex;
-        text-align: center;
+        > a {
+          display: flex;
+          text-align: center;
+
+          span {
+            width: 100%;
+            font-size: 12px;
+            padding: 5px;
+          }
+        }
 
         &:hover {
           color: #0983e3;
