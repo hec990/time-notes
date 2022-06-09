@@ -44,7 +44,11 @@
             placeholder="输入内容"
             v-model="curNote.content"
             @input="updateNote"
+            v-if="active === curNote.id"
         ></textarea>
+        <div class="empty" v-else>
+          左侧点击一个笔记进行编辑
+        </div>
       </div>
     </div>
   </div>
@@ -143,6 +147,7 @@ $borderColor: #edf1f7;
   background-color: #edf1f7;
 }
 
+
 .container {
   .note-box {
     border: 1px solid $borderColor;
@@ -239,6 +244,13 @@ $borderColor: #edf1f7;
         outline: none;
         border: none;
         padding: 10px 0 0 5px;
+      }
+
+      .empty {
+        font-size: 36px;
+        color: #ccc;
+        text-align: center;
+        margin-top: 10%;
       }
     }
   }
