@@ -35,8 +35,8 @@
     </div>
     <div class="content-box">
       <div class="details">
-        <span>创建时间：2022/2/20 20:00:32</span>
-        <span>最后更新：2022/2/20 20:00:32</span>
+        <span>创建时间：{{ formatCreatedAt ? formatCreatedAt : '无' }}</span>
+        <span>最后更新：{{ formatUpdatedAt ? formatUpdatedAt : '无' }}</span>
         <span>{{ statusText }}</span>
       </div>
       <div class="content">
@@ -61,7 +61,8 @@ import {useRouter, useRoute} from 'vue-router';
 import {ElMessage} from 'element-plus';
 import timeIcon from "../time-ui/timeIcon.vue";
 import NoteBook from '../apis/notebook';
-import Note from '../apis/note'
+import Note from '../apis/note';
+import {useformatTime} from "../hooks/useformatTime";
 
 export default {
   name: "NoteDetail",
@@ -105,9 +106,14 @@ export default {
     const content = ref('')
     const curNote = ref({})
     const statusText = ref('笔记未改动')
+    const formatCreatedAt = ref('');
+    const formatUpdatedAt = ref('');
+
     const x = (note) => {
       active.value = note.id;
       curNote.value = note;
+      formatCreatedAt.value = useformatTime(note.createdAt)
+      formatUpdatedAt.value = useformatTime(note.updatedAt)
     }
     const updateNote = () => {
       statusText.value = '正在输入...'
@@ -130,7 +136,9 @@ export default {
       curBook,
       curNote,
       updateNote,
-      statusText
+      statusText,
+      formatCreatedAt,
+      formatUpdatedAt
     }
   },
   components: {
