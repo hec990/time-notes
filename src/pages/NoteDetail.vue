@@ -37,10 +37,14 @@
       <div class="details">
         <span>创建时间：2022/2/20 20:00:32</span>
         <span>最后更新：2022/2/20 20:00:32</span>
-        <span>文档已保存</span>
+        <span>{{ statusText }}</span>
       </div>
       <div class="content">
-        <textarea placeholder="输入内容" v-model="content"></textarea>
+        <textarea
+            placeholder="输入内容"
+            v-model="curNote.content"
+            @input="updateNote"
+        ></textarea>
       </div>
     </div>
   </div>
@@ -70,6 +74,7 @@ export default {
 
     const notebooks = ref([])
     const curBook = ref({})
+    const notes = ref([])
 
     NoteBook.getAll().then(res => {
       notebooks.value = res.data;
@@ -92,11 +97,23 @@ export default {
       })
     }
 
-    const notes = ref([])
     const active = ref('')
     const content = ref('')
+    const curNote = ref({})
+    const statusText = ref('笔记未改动')
     const x = (note) => {
       active.value = note.id;
+      curNote.value = note;
+    }
+    const updateNote = () => {
+      statusText.value = '正在输入...'
+      setTimeout(() => {
+        Note.updateNote({noteId: curNote.value.id},
+            {
+              title: curNote.value.title,
+              content: curNote.value.content
+            }).then(() => statusText.value = '已保存').catch(() => statusText.value = '保存出错')
+      }, 2000)
     }
 
     return {
@@ -106,7 +123,10 @@ export default {
       notes,
       x,
       active,
-      curBook
+      curBook,
+      curNote,
+      updateNote,
+      statusText
     }
   },
   components: {
@@ -219,7 +239,6 @@ $borderColor: #edf1f7;
         outline: none;
         border: none;
         padding: 10px 0 0 5px;
-        font-size: 12px;
       }
     }
   }
