@@ -115,8 +115,9 @@ export default {
 <style lang="scss" scoped>
 $fontColor: #bfbfbf;
 $borderColor: #edf1f7;
+
 .active {
-  color: #0983e3;
+  background-color: #edf1f7;
 }
 
 .container {
@@ -180,7 +181,7 @@ $borderColor: #edf1f7;
         text-align: center;
 
         &:hover {
-          background-color: #edf1f7;
+          color: #0983e3;
         }
       }
     }
