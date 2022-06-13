@@ -8,7 +8,13 @@ const URL = {
 
 export default {
     getAll() {
-        return request(URL.GET)
+        return new Promise((resolve, reject) => {
+            request(URL.GET).then(res => {
+                resolve(res)
+            }).catch(err => {
+                reject(err)
+            })
+        })
     },
     deleteNote({noteId}) {
         return request(URL.DELETE.replace(':noteId', noteId), 'DELETE')
