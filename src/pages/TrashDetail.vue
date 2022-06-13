@@ -3,7 +3,7 @@
     <div class="trash">
       <div class="name">回收站</div>
       <template v-for="(note,index) in notes" :key="index">
-        <div class="list" :class="active === note.id ? 'active' : ''" @click="curNote(note.id)">
+        <div class="list" :class="active === note.id ? 'active' : ''" @click="curNote(note)">
           <div class="title">
             <span>{{ note.title }}</span>
             <span>06-06</span>
@@ -14,7 +14,12 @@
         </div>
       </template>
     </div>
-    <div class="detail">2</div>
+    <div class="detail">
+      <p>title: {{ curNoteDetail.title }}</p>
+      <p>title: {{ curNoteDetail.createdAt }}</p>
+      <p>title: {{ curNoteDetail.updatedAt }}</p>
+      <p>title: {{ curNoteDetail.notebookId }}</p>
+    </div>
   </div>
 </template>
 
@@ -38,11 +43,14 @@ export default {
     })
 
     const active = ref('')
-    const curNote = (noteId) => {
-      active.value = noteId
+    const curNoteDetail = ref([])
+    const curNote = (note) => {
+      active.value = note.id;
+      curNoteDetail.value = note;
     }
 
     const notes = ref([])
+
     Trash.getAll().then(res => {
       notes.value = res.data;
     })
@@ -50,7 +58,8 @@ export default {
     return {
       active,
       curNote,
-      notes
+      notes,
+      curNoteDetail
     }
   }
 }
