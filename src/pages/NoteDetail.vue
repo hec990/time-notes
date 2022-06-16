@@ -16,7 +16,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <span title="添加笔记" class="addNote">
+        <span title="添加笔记" class="addNote" @click="addNoteDialogVisible = !addNoteDialogVisible">
           <time-icon name="tianjia" :size="20"></time-icon>
         </span>
       </div>
@@ -51,6 +51,22 @@
         </div>
       </div>
     </div>
+    <el-dialog
+        v-model="addNoteDialogVisible"
+        title="新增笔记"
+        width="30%"
+        @close="closeDialogInputVal"
+    >
+      <el-input v-model="noteTitle" placeholder="输入笔记名称" @keyup.enter="addNote"/>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addNoteDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addNote"
+        >确定</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -126,6 +142,25 @@ export default {
       }, 2000)
     }
 
+    const addNoteDialogVisible = ref(false)
+    const noteTitle = ref('');
+    const addNote = () => {
+      console.log(curBook.value.id)
+      Note.addNote({notebookId: curBook.value.id}, {
+        title: noteTitle.value,
+        content: curNote.value.content
+      }).then(res => {
+        res.data.formatTime = useformatTime(res.data.createdAt)
+        notes.value.unshift(res.data);
+      })
+      addNoteDialogVisible.value = !addNoteDialogVisible;
+    }
+
+    const closeDialogInputVal = () => {
+      // 清空dialog 输入框的值
+      noteTitle.value = ''
+    }
+
     return {
       content,
       notebooks,
@@ -138,7 +173,11 @@ export default {
       updateNote,
       statusText,
       formatCreatedAt,
-      formatUpdatedAt
+      formatUpdatedAt,
+      addNoteDialogVisible,
+      noteTitle,
+      addNote,
+      closeDialogInputVal
     }
   },
   components: {
