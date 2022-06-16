@@ -16,7 +16,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <span title="添加笔记" class="addNote">
+        <span title="添加笔记" class="addNote" @click="addNoteDialogVisible = !addNoteDialogVisible">
           <time-icon name="tianjia" :size="20"></time-icon>
         </span>
       </div>
@@ -38,6 +38,7 @@
         <span>创建时间：{{ formatCreatedAt ? formatCreatedAt : '无' }}</span>
         <span>最后更新：{{ formatUpdatedAt ? formatUpdatedAt : '无' }}</span>
         <span>{{ statusText }}</span>
+        <span class="delete" v-if="active === curNote.id" @click="deleteNote(curNote.id)">删除</span>
       </div>
       <div class="content">
         <textarea
@@ -51,6 +52,22 @@
         </div>
       </div>
     </div>
+    <el-dialog
+        v-model="addNoteDialogVisible"
+        title="新增笔记"
+        width="30%"
+        @close="noteTitle = ''"
+    >
+      <el-input v-model="noteTitle" placeholder="输入笔记名称" @keyup.enter="addNote"/>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addNoteDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addNote"
+        >确定</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -126,6 +143,27 @@ export default {
       }, 2000)
     }
 
+    const addNoteDialogVisible = ref(false)
+    const noteTitle = ref('');
+    const addNote = () => {
+      console.log(curBook.value.id)
+      Note.addNote({notebookId: curBook.value.id}, {
+        title: noteTitle.value,
+        content: curNote.value.content
+      }).then(res => {
+        res.data.formatTime = useformatTime(res.data.createdAt)
+        notes.value.unshift(res.data);
+      })
+      addNoteDialogVisible.value = !addNoteDialogVisible;
+    }
+
+    const deleteNote = (noteId) => {
+      Note.deleteNote({noteId}).then(res => {
+        notes.value.splice(notes.value.indexOf(noteId), 1)
+        ElMessage.success(res.msg)
+      })
+    }
+
     return {
       content,
       notebooks,
@@ -138,7 +176,11 @@ export default {
       updateNote,
       statusText,
       formatCreatedAt,
-      formatUpdatedAt
+      formatUpdatedAt,
+      addNoteDialogVisible,
+      noteTitle,
+      addNote,
+      deleteNote
     }
   },
   components: {
@@ -243,6 +285,16 @@ $borderColor: #edf1f7;
         font-size: 12px;
         margin-right: 10px;
       }
+
+      .delete {
+        border: 1px solid #ccc;
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        padding: 4px;
+        border-radius: 4px;
+      }
+
     }
 
     .content {
