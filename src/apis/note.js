@@ -26,7 +26,13 @@ export default {
         return request(URL.ADD.replace(':notebookId', notebookId), 'POST', {title, content})
     },
     deleteNote({noteId}) {
-        return request(URL.DELETE.replace(':noteId', noteId), 'delete')
+        return new Promise((resolve, reject) => {
+            request(URL.DELETE.replace(':noteId', noteId), 'delete').then(res => {
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            })
+        })
     },
     updateNote({noteId}, {title, content}) {
         return request(URL.UPDATE.replace(':noteId', noteId), 'PATCH', {title, content})

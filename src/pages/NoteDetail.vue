@@ -38,6 +38,7 @@
         <span>创建时间：{{ formatCreatedAt ? formatCreatedAt : '无' }}</span>
         <span>最后更新：{{ formatUpdatedAt ? formatUpdatedAt : '无' }}</span>
         <span>{{ statusText }}</span>
+        <span class="delete" v-if="active === curNote.id" @click="deleteNote(curNote.id)">删除</span>
       </div>
       <div class="content">
         <textarea
@@ -156,6 +157,13 @@ export default {
       addNoteDialogVisible.value = !addNoteDialogVisible;
     }
 
+    const deleteNote = (noteId) => {
+      Note.deleteNote({noteId}).then(res => {
+        notes.value.splice(notes.value.indexOf(noteId), 1)
+        ElMessage.success(res.msg)
+      })
+    }
+
     return {
       content,
       notebooks,
@@ -171,7 +179,8 @@ export default {
       formatUpdatedAt,
       addNoteDialogVisible,
       noteTitle,
-      addNote
+      addNote,
+      deleteNote
     }
   },
   components: {
@@ -276,6 +285,16 @@ $borderColor: #edf1f7;
         font-size: 12px;
         margin-right: 10px;
       }
+
+      .delete {
+        border: 1px solid #ccc;
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        padding: 4px;
+        border-radius: 4px;
+      }
+
     }
 
     .content {
