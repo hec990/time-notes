@@ -55,7 +55,7 @@
         v-model="addNoteDialogVisible"
         title="新增笔记"
         width="30%"
-        @close="closeDialogInputVal"
+        @close="noteTitle = ''"
     >
       <el-input v-model="noteTitle" placeholder="输入笔记名称" @keyup.enter="addNote"/>
       <template #footer>
@@ -156,11 +156,6 @@ export default {
       addNoteDialogVisible.value = !addNoteDialogVisible;
     }
 
-    const closeDialogInputVal = () => {
-      // 清空dialog 输入框的值
-      noteTitle.value = ''
-    }
-
     return {
       content,
       notebooks,
@@ -176,8 +171,7 @@ export default {
       formatUpdatedAt,
       addNoteDialogVisible,
       noteTitle,
-      addNote,
-      closeDialogInputVal
+      addNote
     }
   },
   components: {
