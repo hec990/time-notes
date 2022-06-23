@@ -71,10 +71,12 @@ export default {
 }
 
 .container {
+  height: 100vh;
 
   .trash {
     min-width: 250px;
     background-color: #fafafa;
+    overflow: auto;
 
     .name {
       border: 1px solid #edf1f7;
