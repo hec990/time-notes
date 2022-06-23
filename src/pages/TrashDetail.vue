@@ -109,7 +109,7 @@ export default {
         }
 
         > span:nth-child(1) {
-          min-width: 190px;
+          min-width: 170px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
