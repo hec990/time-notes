@@ -6,7 +6,7 @@
         <div class="list" :class="active === note.id ? 'active' : ''" @click="curNote(note)">
           <div class="title">
             <span>{{ note.title }}</span>
-            <span>06-06</span>
+            <span>{{ formatCreatedAt.slice(5, 10) }}</span>
           </div>
           <div class="belong">
             归属：小何何 / 前端学习笔记
@@ -29,6 +29,7 @@ import {useRouter} from 'vue-router';
 import {ElMessage} from 'element-plus';
 import Auth from '../apis/auth';
 import Trash from '../apis/trash'
+import {useformatTime} from "../hooks/useformatTime";
 
 export default {
   name: "TrashDetail",
@@ -50,8 +51,12 @@ export default {
     }
 
     const notes = ref([])
+    const formatCreatedAt = ref('');
 
     Trash.getAll().then(res => {
+      res.data.forEach(note => {
+        formatCreatedAt.value = useformatTime(note.createdAt);
+      })
       notes.value = res.data;
     })
 
@@ -59,7 +64,8 @@ export default {
       active,
       curNote,
       notes,
-      curNoteDetail
+      curNoteDetail,
+      formatCreatedAt
     }
   }
 }
@@ -93,7 +99,8 @@ export default {
       justify-content: center;
       align-items: center;
     }
-    >div:nth-child(2){
+
+    > div:nth-child(2) {
       margin-top: 80px;
     }
 
