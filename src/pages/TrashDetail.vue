@@ -80,8 +80,21 @@ export default {
 
     .name {
       border: 1px solid #edf1f7;
+      background-color: #fafafa;
+      height: 80px;
+      width: 234px;
       padding: 25px 0 25px 10px;
       font-size: 16px;
+      position: fixed;
+      top: 0;
+      left: 211px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    >div:nth-child(2){
+      margin-top: 80px;
     }
 
     .list {
